@@ -13,7 +13,8 @@ STARTROCKETS = 5
 
 FPS = 60
 WIDTH = 600
-HEIGHT = 600
-ROCKETSPEED = 3
+HEIGHT = 800
+ROCKETSPEED = 8
+FONT_NAME = 'comicsans'
 
 HS_FILE = 'highscore.txt'
