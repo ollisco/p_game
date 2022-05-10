@@ -7,8 +7,8 @@ Project: pygame
 import pygame
 import random
 from os import path
-import pg.Sprites as sprites
-from pg.settings import *
+import Sprites as sprites
+from settings import *
 
 pygame.init()
 
@@ -32,8 +32,6 @@ class Game:
         self.bkg_rect = self.bkg_img.get_rect()
 
         self.load_data()
-        
-
 
     def load_data(self):
         ##IMPORTERA HIGHSCORE FIL####
@@ -41,7 +39,7 @@ class Game:
         with open(path.join(self.dir, HS_FILE), 'w') as file:
             try:
                 self.highscore = int(file.read())
-                
+
             except Exception as e:
                 print(e)
                 self.highscore = 0
@@ -59,11 +57,10 @@ class Game:
         self.all_sprites.add(self.player)
 
         for i in range(STARTROCKETS):
-            r = sprites.Rocket(speed=ROCKETSPEED, target=self.player, img=self.rocket_img)
+            r = sprites.Rocket(speed=ROCKETSPEED,
+                               target=self.player, img=self.rocket_img)
             self.rockets.add(r)
             self.all_sprites.add(r)
-
-
 
         self.run()
 
@@ -78,7 +75,6 @@ class Game:
             self.events()
             self.update()
             self.draw()
-
 
     def update(self):
         # Update
@@ -101,7 +97,8 @@ class Game:
 
             if rocket_hit:
                 self.score += 1
-                r = sprites.Rocket(speed=ROCKETSPEED, target=self.player, img=self.rocket_img)
+                r = sprites.Rocket(speed=ROCKETSPEED,
+                                   target=self.player, img=self.rocket_img)
                 self.rockets.add(r)
                 self.all_sprites.add(r)
 
@@ -116,7 +113,6 @@ class Game:
                 if self.playing:
                     self.player = False
                 self.running = False
-
 
     def draw(self):
         self.screen.fill(BLACK)
@@ -135,28 +131,34 @@ class Game:
         go_img = sprites.load_image('sky.png')
         go_rect = go_img.get_rect()
 
-        logo = pygame.transform.scale(sprites.load_image('alien.png'), (200, 200))
+        logo = pygame.transform.scale(
+            sprites.load_image('alien.png'), (200, 200))
         logo.set_colorkey(BLACK)
 
-        logo2 = pygame.transform.scale(sprites.load_image('pp.png'), (150, 200))
+        logo2 = pygame.transform.scale(
+            sprites.load_image('pp.png'), (150, 200))
         logo2.set_colorkey(BLACK)
 
         self.load_data()
         self.screen.fill(BLACK)
         self.screen.blit(go_img, go_rect)
-        self.screen.blit(logo, (0,0))
+        self.screen.blit(logo, (0, 0))
         self.screen.blit(logo2, (WIDTH-150, 0))
         self.draw_text('GAME OVER!', 50, color, WIDTH / 2, HEIGHT / 4)
         if self.score > self.highscore:
             self.highscore = self.score
-            self.draw_text('NEW HIGHSCORE: ' + str(self.highscore), 40, color, WIDTH / 2, HEIGHT / 2)
+            self.draw_text('NEW HIGHSCORE: ' + str(self.highscore),
+                           40, color, WIDTH / 2, HEIGHT / 2)
             with open(path.join(self.dir, HS_FILE), 'w') as f:
                 f.write(str(self.score))
 
         else:
-            self.draw_text('Score: ' + str(self.score), 30, color, WIDTH / 2, HEIGHT / 2)
-            self.draw_text('High score: ' + str(self.highscore), 40, color, WIDTH / 2, (HEIGHT / 2) + 40)
-        self.draw_text('Press a key to start', 50, color, WIDTH / 2, HEIGHT * 0.75)
+            self.draw_text('Score: ' + str(self.score), 30,
+                           color, WIDTH / 2, HEIGHT / 2)
+            self.draw_text('High score: ' + str(self.highscore),
+                           40, color, WIDTH / 2, (HEIGHT / 2) + 40)
+        self.draw_text('Press a key to start', 50,
+                       color, WIDTH / 2, HEIGHT * 0.75)
 
         pygame.display.flip()
         self.wait_for_key()

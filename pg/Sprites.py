@@ -8,9 +8,8 @@ import pygame
 import random
 from os import path
 
-from pg.settings import *
+from settings import *
 from math import atan2, degrees
-
 
 
 vec = pygame.math.Vector2
@@ -19,15 +18,18 @@ vec3 = pygame.math.Vector3
 
 img_dir = path.join(path.dirname(__file__), 'img')
 
+
 def load_image(filename):
     return pygame.image.load(path.join(img_dir, filename)).convert()
+
 
 class Rocket(pygame.sprite.Sprite):
     def __init__(self, speed, target, img):
         pygame.sprite.Sprite.__init__(self)
         self.width = 30
         self.height = 50
-        self.image_orig = pygame.transform.scale(img, (self.width, self.height))
+        self.image_orig = pygame.transform.scale(
+            img, (self.width, self.height))
         self.image_orig.set_colorkey(BLACK)
         self.image = self.image_orig.copy()
         self.rect = self.image.get_rect()
@@ -54,7 +56,6 @@ class Rocket(pygame.sprite.Sprite):
         if side > 0.75:
             self.pos = vec(random.randrange(-30, WIDTH + 30), HEIGHT + 30)
 
-
     def update(self):
         self.angle = atan2(self.vel[1], self.vel[0])
         self.angle = degrees(self.angle) + 90
@@ -62,18 +63,16 @@ class Rocket(pygame.sprite.Sprite):
         # Add vel
         self.direction = vec(self.target.pos - self.pos)
         self.direction = pygame.math.Vector2.normalize(self.direction)
-        self.vel = vec(self.speed * self.direction[0], self.speed * self.direction[1])
+        self.vel = vec(
+            self.speed * self.direction[0], self.speed * self.direction[1])
 
         # Angle
-
-
 
         self.pos += self.vel
 
         # print(self.angle)
         # set new pos
         self.rect.center = self.pos
-
 
     def rotate(self, degrees):
         now = pygame.time.get_ticks()
@@ -94,14 +93,13 @@ class Player(pygame.sprite.Sprite):
         self.img = load_image('alien.png')
         self.width = 16
         self.height = 14
-        self.image = pygame.transform.scale(self.img, (int(self.width * 5/4), int(self.height * 5/4)))
+        self.image = pygame.transform.scale(
+            self.img, (int(self.width * 5/4), int(self.height * 5/4)))
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2, HEIGHT / 2)
         # pos is temporary vairable for calulations
         self.pos = vec(WIDTH / 2, HEIGHT / 2)
-
-
 
     def update(self):
         self.pos = pygame.mouse.get_pos()
